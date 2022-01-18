@@ -1,0 +1,9 @@
+pack.png
+	size: 256, 512
+	filter: Linear, Linear
+fishing
+	bounds: 1, 4, 142, 499
+green-bar
+	bounds: 145, 393, 28, 110
+white-pixel
+	bounds: 1, 1, 1, 1

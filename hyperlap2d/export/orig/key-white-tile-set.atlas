@@ -1,0 +1,27 @@
+key-white-tile-set.png
+	size: 512, 64
+	filter: Linear, Linear
+key-white0
+	bounds: 1, 1, 32, 32
+key-white1
+	bounds: 35, 1, 32, 32
+key-white10
+	bounds: 69, 1, 32, 32
+key-white2
+	bounds: 69, 1, 32, 32
+key-white11
+	bounds: 103, 1, 32, 32
+key-white3
+	bounds: 137, 1, 32, 32
+key-white4
+	bounds: 171, 1, 32, 32
+key-white5
+	bounds: 205, 1, 32, 32
+key-white6
+	bounds: 239, 1, 32, 32
+key-white7
+	bounds: 273, 1, 32, 32
+key-white8
+	bounds: 307, 1, 32, 32
+key-white9
+	bounds: 341, 1, 32, 32

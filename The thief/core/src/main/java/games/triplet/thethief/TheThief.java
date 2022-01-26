@@ -1,9 +1,9 @@
 package games.triplet.thethief;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
@@ -11,10 +11,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import games.rednblack.editor.renderer.SceneLoader;
-import games.rednblack.editor.renderer.components.TransformComponent;
-import games.rednblack.editor.renderer.utils.ComponentRetriever;
+import games.rednblack.editor.renderer.data.SceneVO;
 import games.rednblack.editor.renderer.utils.ItemWrapper;
-import games.triplet.thethief.script.SpawnKey;
+import games.triplet.thethief.script.LockpickMinigame;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class TheThief extends ApplicationAdapter {
@@ -24,6 +23,7 @@ public class TheThief extends ApplicationAdapter {
 	private Viewport mViewport;
 	private OrthographicCamera mCamera;
 	private PooledEngine mEngine;
+	private SceneVO sceneVO;
 
 	@Override
 	public void create() {
@@ -35,9 +35,7 @@ public class TheThief extends ApplicationAdapter {
 		mSceneLoader = new SceneLoader();
 		//Load the desired scene with custom viewport
 		mSceneLoader.loadScene("MainScene", mViewport);
-		ItemWrapper root = new ItemWrapper(mSceneLoader.getRoot());
-		SpawnKey key = new SpawnKey(root.getChild("Box").getEntity(), root.getChild("contactor").getEntity());
-		root.getChild("key").addScript(key, mEngine);
+		sceneVO = mSceneLoader.getSceneVO();
 
 	}
 
@@ -52,6 +50,21 @@ public class TheThief extends ApplicationAdapter {
 		//Apply ViewPort and update SceneLoader's ECS engine
 		mViewport.apply();
 		mSceneLoader.getEngine().update(Gdx.graphics.getDeltaTime());
+
+		if((Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) && (sceneVO.sceneName.equals("MainScene"))){
+			mSceneLoader.loadScene("MinigameScene", mViewport);
+			sceneVO = mSceneLoader.getSceneVO();
+			ItemWrapper miniGameScene = new ItemWrapper(mSceneLoader.getRoot());
+			ItemWrapper bar = miniGameScene.getChild("contactor");
+			LockpickMinigame key = new LockpickMinigame(miniGameScene.getChild("Box").getEntity(), miniGameScene.getChild("key").getEntity(), miniGameScene.getChild("progress_bar").getEntity());
+			bar.addScript(key, mEngine);
+		}
+
+		if((LockpickMinigame.isSuccess) && (sceneVO.sceneName.equals("MinigameScene"))){
+			mSceneLoader.loadScene("GameScene", mViewport);
+			sceneVO = mSceneLoader.getSceneVO();
+			ItemWrapper GameScene = new ItemWrapper(mSceneLoader.getRoot());
+		}
 
 	}
 
